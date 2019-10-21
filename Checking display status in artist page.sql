@@ -1,4 +1,4 @@
-SELECT * from 
+SELECT t2.name, COUNT(*) from 
 (
 SELECT 
 t1.*,
@@ -15,10 +15,13 @@ from artists
 Join artist_track on artist_track.ArtistId = artists.UUID
 Join tracks on tracks.id = artist_track.TrackId and tracks.Valid > 0
 Join datasources on datasources.TrackId = tracks.Id and datasources.Valid > 0
-and datasources.FormatID in ('74BA994CF2B54C40946EA62C3979DDA3','1A67A5F1E0D84FB9B48234AE65086375')
+and datasources.FormatID in ('74BA994CF2B54C40946EA62C3979DDA3','1A67A5F1E0D84FB9B48234AE65086375') and datasources.DisplayStatus = 1
 
 where 
-artists.name = 'Florida Georgia Line' 
+artists.name in 
+(
+"Cardi B"
+)
 and 
 artists.Valid > 0
 GROUP BY
@@ -30,7 +33,8 @@ ORDER BY TrackId
 as t1
 ) as t2
 WHERE t2.Rankovertrack = 1
-GROUP BY t2.FormatID,t2.Sourceuri
+GROUP BY t2.artist_UUID
+
 ORDER BY 
 t2.TrackID,
 Rankovertrack ASC
