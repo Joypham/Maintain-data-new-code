@@ -21,8 +21,7 @@ group by albumid
 
 
 * Remove wrong artist albums
--- DELETE from artist_album
--- Join (
+
 SELECT
 	albums.UUID AS albumuuid,
 	albums.Id AS album_id,
