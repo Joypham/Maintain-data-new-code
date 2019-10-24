@@ -1,3 +1,5 @@
+* Match new artist_album
+
 INSERT INTO artist_album (albumid,artistid,valid)
 SELECT AlbumId,ArtistId_joy, 1 as valid from (
 
@@ -15,5 +17,32 @@ albums.UUID
  ) as t1
 -- where 
 -- AlbumId = 306771967486546
-group by albumid 
+group by albumid
+
+
+* Remove wrong artist albums
+-- DELETE from artist_album
+-- Join (
+SELECT
+	albums.UUID AS albumuuid,
+	albums.Id AS album_id,
+	albums.Title AS album_title,
+	artists.`Name` AS artist_name,
+	artists.id AS artist_id,
+	itunes_album_tracks_release.Artist as artist_album_itune
+FROM
+	albums
+JOIN artist_album ON albums.id = artist_album.AlbumId
+JOIN artists ON artists.Id = artist_album.ArtistId
+AND artists.Valid > 0
+JOIN itunes_album_tracks_release ON itunes_album_tracks_release.AlbumUUID = albums.UUID
+and artists.`Name` <> itunes_album_tracks_release.Artist
+WHERE
+	albums.valid = 1
+-- and albums.id = '56472540716429'
+-- and
+-- artists.id = '352744755425905'
+group by
+albums.UUID
+
 
