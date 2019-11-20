@@ -4,6 +4,7 @@ Select * from (
 SELECT
     CONCAT('https://aimg.vibbidi-vid.com/',albums.square_image_url) as album_image_url,
     albums.title,
+    itunes_album_tracks_release.Artist,
     albums.TotalTracks,
     itunes_album_tracks_release.AlbumUUID,
     tracks.id as trackid,
