@@ -18,14 +18,11 @@ JOIN tracks ON tracks.Title = itunes_album_tracks_release.TrackName
 AND tracks.Artist = itunes_album_tracks_release.TrackArtist
 AND tracks.Valid > 0
 and
-tracks.artist = 'ariana grande'
+tracks.title not like '%Karaoke%'
 and
-tracks.id = '7375302F968C4E198B8060301D4B71E8'
+tracks.artist = 'Taylor swift'
 
-AND
-tracks.title not like 'Karaoke Version%'
-and
-tracks.title not like '%Karaoke Version'
+
 Join albums on albums.uuid =itunes_album_tracks_release.AlbumUUID and albums.valid = 1
 
 and albums.ReleaseDate 
@@ -43,4 +40,3 @@ order by trackname, trackartist
 On tracks.id = t3.trackid 
 set 
 tracks.ext = JSON_SET(IFNULL(tracks.Ext, JSON_OBJECT()),'$.albumuuid_releasedate',t3.Albumuuid,'$.releasedate',t3.album_release_date)
-
