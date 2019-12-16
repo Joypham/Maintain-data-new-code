@@ -20,21 +20,26 @@ AND tracks.Valid > 0
 and
 tracks.title not like '%Karaoke%'
 and
-tracks.artist = 'Taylor swift'
+tracks.id = '84FB6B30D9044FCEA6F19C117EB848A1'
 
 
 Join albums on albums.uuid =itunes_album_tracks_release.AlbumUUID and albums.valid = 1
 
 and albums.ReleaseDate 
 where 
-itunes_album_tracks_release.Artist <> 'Various Artists'
+itunes_album_tracks_release.Artist not like '%Various Artists%'
 and
 itunes_album_tracks_release.AlbumName not like '%NOW That\'s What%' and itunes_album_tracks_release.AlbumName not like '%NOW Party Anthems%'
 ) as t1
 where 
 RankOverTrack = 1
 and 
-album_release_date <> tracks_release_date
+(album_release_date <> tracks_release_date
+or 
+tracks_release_date is null
+or 
+tracks_release_date = ''
+)
 order by trackname, trackartist
 ) as t3
 On tracks.id = t3.trackid 
