@@ -17,7 +17,7 @@ AND albums.valid > 0 and (albums.title not like '%NOW That\'s What%' and albums.
 and albums.square_image_url is not NULL
 JOIN tracks ON tracks.Title = itunes_album_tracks_release.TrackName
 AND itunes_album_tracks_release.TrackArtist = tracks.Artist
-AND tracks.valid > 0 
+AND tracks.valid = 1 
 
 and 
 tracks.Id in 
@@ -32,7 +32,7 @@ itunes_album_tracks_release.AlbumName not like '%NOW That\'s What%'
 and 
 itunes_album_tracks_release.AlbumName not like '%NOW Party Anthems%'
 and
-itunes_album_tracks_release.Valid > 0
+itunes_album_tracks_release.Valid = 1
 ) as t1
 where 
 -- t1.Rankovertrack = 1
