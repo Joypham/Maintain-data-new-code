@@ -3,13 +3,15 @@
 Select * from (
 SELECT
     CONCAT('https://aimg.vibbidi-vid.com/',albums.square_image_url) as album_image_url,
-    albums.title,
+		tracks.ImageURL as image_url,
+    itunes_album_tracks_release.albumname,
     itunes_album_tracks_release.Artist,
     albums.TotalTracks,
+		albums.ReleaseDate,
     itunes_album_tracks_release.AlbumUUID,
     tracks.id as trackid,
-    tracks.ImageURL as image_url,
-    ROW_NUMBER () over (PARTITION BY tracks.id ORDER BY albums.TotalTracks DESC) AS `Rankovertrack`
+    
+    ROW_NUMBER () over (PARTITION BY tracks.id ORDER BY albums.TotalTracks DESC,albums.ReleaseDate DESC) AS `Rankovertrack`
 FROM
     itunes_album_tracks_release
 JOIN albums ON albums.UUID = itunes_album_tracks_release.AlbumUUID
@@ -22,8 +24,7 @@ AND tracks.valid = 1
 and 
 tracks.Id in 
 (
-'41AD83C09B594B8BB0080D0F43D9AA54',
-'B565CA63D3BF4FD8AC60C39656B366BD'
+'B7FF39E2F37B4C379766E3CC1BBA7262'
 )
 where
 itunes_album_tracks_release.Artist <> 'Various Artists'
@@ -35,12 +36,15 @@ and
 itunes_album_tracks_release.Valid = 1
 ) as t1
 where 
--- t1.Rankovertrack = 1
--- and
+t1.Rankovertrack = 1
+and
 (t1.image_url <> t1.album_image_url or t1.image_url is null)
-order by albumuuid
+order by 
+trackid,
+t1.Rankovertrack asc
 -- ) as t2
 -- on t2.trackid = tracks.id
 -- SET
 -- tracks.ext = Json_set(if(ext is null,JSON_OBJECT(),ext), '$.album_image_albumuuid',t2.albumuuid),
 -- tracks.ImageURL = t2.album_image_url
+
